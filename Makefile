@@ -2,6 +2,7 @@ OBJECTS = *.o
 SRC = main.cpp\
 		src/Exceptions.cpp\
 		src/Operands.cpp\
+		src/Operations.cpp\
 
 FLAGS = -Wall -Wextra -Werror -std=c++11
 NAME = vm

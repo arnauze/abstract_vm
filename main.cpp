@@ -1,23 +1,39 @@
 # include "inc/header.hpp"
 
-int main(void) {
+int main(int argc, char **argv) {
 
-    class Int8          x(42);
-    class Int16         y(150);
-    class Int32         z(953241);
-    MutantStack<IOperand*>         stack;
+    std::string     input;
+    (void)argc;
+    (void)argv;
 
-    stack.push(&x);
-    stack.push(&y);
-    stack.push(&z);
+    while (1) {
 
-    MutantStack<IOperand*>::iterator        it = stack.begin();
-    MutantStack<IOperand*>::iterator        ite = stack.end();
+        try {
+            
+            std::cout << "Enter an action:" << std::endl;
+            std::cin >> input;
+            if (input == "exit") 
+                return (1);
+            else {
+                std::map<std::string, void (*)(IOperand*)>::iterator    it = dispatch_table.find(input);
+                if (it != dispatch_table.end()) {
+                    
+                    if (input == "push")
+                        dispatch_table[input](new class Int32(157));
+                    else
+                        dispatch_table[input](nullptr);
 
-    for(; it != ite; it++) {
-        std:: cout << (*it)->toString() << std::endl;
+                }
+                dispatch_table["dump"](nullptr);
+            }
+
+        } catch(std::exception &e) {
+
+            std::cout << e.what() << std::endl;
+
+        }
+
     }
 
-    return (0);
-
+    return (1);
 }
