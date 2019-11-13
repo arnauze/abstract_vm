@@ -5,8 +5,10 @@
 # include <iostream>
 # include <vector>
 # include <sstream>
+# include <fstream>
 # include <exception>
 # include <map>
+# include <stdio.h>
 
 # include "Operands.hpp"
 # include "Exceptions.hpp"
@@ -26,7 +28,7 @@ void                                func_mod(IOperand *);
 void                                func_print(IOperand *);
 void                                func_exit(IOperand *);
 
-static std::map<std::string, void (*)(IOperand*)> dispatch_table = {
+static std::map<std::string, void (*)(IOperand*)> dispatch_table  = {
     {"push", &func_push},
     {"pop", &func_pop},
     {"dump", &func_dump},
@@ -37,7 +39,29 @@ static std::map<std::string, void (*)(IOperand*)> dispatch_table = {
     {"div", &func_div},
     {"mod", &func_mod},
     {"print", &func_print},
-    {"exit", &func_push},
+    {"exit", &func_push}
+};
+
+static std::map<std::string, eOperandType> types = {
+    {"int8", Int8},
+    {"int16", Int16},
+    {"int32", Int32},
+    {"float", Float},
+    {"double", Double}
+};
+
+static  std::string actions[11] = {
+    "push",
+    "pop",
+    "dump",
+    "assert",
+    "add",
+    "sub",
+    "mul",
+    "div",
+    "mod",
+    "print",
+    "exit"
 };
 
 #endif

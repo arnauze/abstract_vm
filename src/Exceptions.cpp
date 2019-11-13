@@ -9,9 +9,13 @@ const char * StackEmpty::what(void) const throw()  {
 }
 
 const char * WrongType::what(void) const throw()  {
-    return "Wrong type.";
+    return "Trying to print something other than a char (Int8).";
 }
 
 const char * NotEnoughArguments::what(void) const throw()  {
     return "Not enough arguments to execute the operation.";
+}
+
+const char * UnknownAction::what(void) const throw()  {
+    return "Action doesn't exist.";
 }

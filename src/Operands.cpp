@@ -134,7 +134,7 @@ IOperand const                  *AOperand::operator%( IOperand const & rhs ) con
 Int8::Int8(void) :  _toStr(""), value(0) { return ; }
 Int8::Int8(char value) : value(value) {
     std::ostringstream          s;
-    s << value;
+    s << static_cast<int>(value);
     this->_toStr = s.str();
     return ;
 }

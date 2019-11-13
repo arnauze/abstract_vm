@@ -12,10 +12,14 @@ all: $(NAME)
 $(NAME):
 	clang++ $(FLAGS) $(SRC) -o $(NAME) 
 
+lldb:
+	clang++ $(FLAGS) $(SRC) -o $(NAME) -g
+
 clean:
 	rm -f $(OBJECTS)
 
 fclean: clean
 	rm -f $(NAME)
+	rm -rf $(NAME).dSYM
 
 re: fclean all

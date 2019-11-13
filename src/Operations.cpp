@@ -27,6 +27,8 @@ void                func_pop(IOperand*) {
 }
 
 void                func_dump(IOperand*) {
+    if (stack.size() < 1)
+        throw StackEmpty();
     MutantStack<IOperand*>::iterator        ite = stack.end();
     while (--ite >= stack.begin())
         std::cout << (*ite)->toString() << std::endl;
@@ -144,7 +146,7 @@ void                func_print(IOperand*) {
 	if (x->getType() != Int8)
 		throw (WrongType());
 	c = std::stoi(x->toString());
-	std::cout << c;
+    std::cout << c;
     return ;
 }
 

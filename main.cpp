@@ -1,38 +1,99 @@
 # include "inc/header.hpp"
 
-int main(int argc, char **argv) {
+void                action_exist(std::string action) {
+    int i = -1;
+    bool    found = false;
 
-    std::string     input;
-    (void)argc;
-    (void)argv;
+    while (++i < 11)
+        if (actions[i] == action)
+            found = true;
+    if (found)
+        return ;
+    else
+        throw UnknownAction();
+}
 
-    while (1) {
+void                read_file(std::fstream &file) {
+    std::string     str;
+    int count = 0;
 
-        try {
-            
-            std::cout << "Enter an action:" << std::endl;
-            std::cin >> input;
-            if (input == "exit") 
-                return (1);
-            else {
-                std::map<std::string, void (*)(IOperand*)>::iterator    it = dispatch_table.find(input);
-                if (it != dispatch_table.end()) {
-                    
-                    if (input == "push")
-                        dispatch_table[input](new class Int32(157));
-                    else
-                        dispatch_table[input](nullptr);
+    if (file.is_open()) {
 
+        while (std::getline(file, str)) {
+
+            count++;
+
+            if (str.size() > 0) {
+
+                std::string         action;
+                action = str.substr(0, str.find(" "));
+                action.erase(std::remove_if(action.begin(), action.end(), ::isspace), action.end());
+
+                try {
+                    action_exist(action);
+                    if (action == "push" || action == "assert") {
+
+                        std::string     value;
+                        value = str.substr(action.size(), str.find("\n"));
+                        value.erase(std::remove_if(value.begin(), value.end(), ::isspace), value.end());
+
+                        std::string         type;
+                        type = value.substr(0, value.find("("));
+
+                        IOperand*   op;
+                        std::string n;
+                        n = value.substr(value.find("(") + 1, value.find(")"));
+                        n = n.substr(0, n.size() - 1);
+                        op = const_cast<IOperand*>(AOperand::factory.createOperand(types[type], n));
+
+                        dispatch_table[action](op);
+
+                    } else {
+                        dispatch_table[action](nullptr);
+                    }
+
+                } catch(std::exception & e) {
+                    std::cout << "Line " << count << ": " << e.what() << std::endl;
                 }
-                dispatch_table["dump"](nullptr);
+
+
             }
-
-        } catch(std::exception &e) {
-
-            std::cout << e.what() << std::endl;
 
         }
 
+    } else {
+        std::cout << "File does not exist" << std::endl;
+    }
+    file.close();
+    return ;
+}
+
+int                 main(int argc, char **argv) {
+
+    std::string     input;
+    (void)argv;
+
+    if (argc == 1) {
+		std::ofstream           file("outputFile");
+		while (std::cin.good())
+		{
+			std::getline(std::cin, input);
+			if (input == ";;")
+				break ;
+			file << input << std::endl;
+		}
+		file.close();
+    }
+
+    std::fstream    file;
+    file.open(argc == 1 ? "outputFile" : argv[1]);
+
+    if (file.good()) {
+        try {
+            read_file(file);
+        } catch(std::exception & e) {
+            std::cout << e.what() << std::endl;
+        }
     }
 
     return (1);

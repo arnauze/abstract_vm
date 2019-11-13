@@ -19,4 +19,8 @@ struct                      NotEnoughArguments : public std::exception {
     const char* what() const throw();
 };
 
+struct                      UnknownAction : public std::exception {
+    const char* what() const throw();
+};
+
 #endif
