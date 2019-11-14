@@ -16,8 +16,11 @@ void                action_exist(std::string action) {
 void                read_file(std::fstream &file) {
     std::string     str;
     int count = 0;
+    std::string         action;
 
-    if (file.is_open()) {
+    logs.open("Logs");
+
+    if (file.is_open() && logs.is_open()) {
 
         while (std::getline(file, str)) {
 
@@ -25,7 +28,6 @@ void                read_file(std::fstream &file) {
 
             if (str.size() > 0) {
 
-                std::string         action;
                 action = str.substr(0, str.find(" "));
                 action.erase(std::remove_if(action.begin(), action.end(), ::isspace), action.end());
 
@@ -73,19 +75,24 @@ void                read_file(std::fstream &file) {
                 
             }
 
+            action.clear();
+
         }
+
+        if (action != "exit")
+            throw WrongExit();
 
     } else {
         std::cout << "File does not exist" << std::endl;
     }
     file.close();
+    logs.close();
     return ;
 }
 
 int                 main(int argc, char **argv) {
 
     std::string     input;
-    (void)argv;
 
     if (argc == 1) {
 		std::ofstream           file("outputFile");

@@ -14,8 +14,6 @@
 # include "Exceptions.hpp"
 # include "mutantstack.hpp"
 
-static MutantStack<IOperand*>       stack;
-
 void                                func_push(IOperand * value);
 void                                func_pop(IOperand *);
 void                                func_dump(IOperand *);
@@ -28,6 +26,9 @@ void                                func_mod(IOperand *);
 void                                func_print(IOperand *);
 void                                func_exit(IOperand *);
 
+static MutantStack<IOperand*>       stack;
+static std::ofstream                 logs;
+
 static std::map<std::string, void (*)(IOperand*)> dispatch_table  = {
     {"push", &func_push},
     {"pop", &func_pop},
@@ -39,7 +40,7 @@ static std::map<std::string, void (*)(IOperand*)> dispatch_table  = {
     {"div", &func_div},
     {"mod", &func_mod},
     {"print", &func_print},
-    {"exit", &func_push}
+    {"exit", &func_exit}
 };
 
 static std::map<std::string, eOperandType> types = {

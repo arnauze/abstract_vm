@@ -27,3 +27,7 @@ const char * NumberError::what(void) const throw()  {
 const char * Overflow::what(void) const throw()  {
     return "Overflow or underflow of value.";
 }
+
+const char * WrongExit::what(void) const throw()  {
+    return "Program doesn't end with an exit instruction.";
+}
