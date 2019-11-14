@@ -29,34 +29,48 @@ void                read_file(std::fstream &file) {
                 action = str.substr(0, str.find(" "));
                 action.erase(std::remove_if(action.begin(), action.end(), ::isspace), action.end());
 
-                try {
-                    action_exist(action);
-                    if (action == "push" || action == "assert") {
+                if (action[0] != ';') {
 
-                        std::string     value;
-                        value = str.substr(action.size(), str.find("\n"));
-                        value.erase(std::remove_if(value.begin(), value.end(), ::isspace), value.end());
+                    try {
+                        action_exist(action);
+                        if (action == "push" || action == "assert") {
 
-                        std::string         type;
-                        type = value.substr(0, value.find("("));
+                            std::string     value;
+                            value = str.substr(action.size(), str.find("\n"));
+                            value.erase(std::remove_if(value.begin(), value.end(), ::isspace), value.end());
 
-                        IOperand*   op;
-                        std::string n;
-                        n = value.substr(value.find("(") + 1, value.find(")"));
-                        n = n.substr(0, n.size() - 1);
-                        op = const_cast<IOperand*>(AOperand::factory.createOperand(types[type], n));
+                            std::string         type;
+                            type = value.substr(0, value.find("("));
 
-                        dispatch_table[action](op);
+                            IOperand*   op;
+                            std::string n;
+                            std::string str;
 
-                    } else {
-                        dispatch_table[action](nullptr);
+                            str = value.substr(value.find("(") + 1, value.find(")"));
+                            str = str.substr(0, str.find(")"));
+                            size_t i = -1;
+
+                            while (++i < str.size()) {
+                                if ((str[i] >= '0' && str[i] <= '9') || str[i] == '.')
+                                    n += str[i];
+                                else
+                                    throw NumberError();
+                            }
+
+                            op = const_cast<IOperand*>(AOperand::factory.createOperand(types[type], n));
+
+                            dispatch_table[action](op);
+
+                        } else {
+                            dispatch_table[action](nullptr);
+                        }
+
+                    } catch(std::exception & e) {
+                        std::cout << "Line " << count << ": " << e.what() << std::endl;
                     }
 
-                } catch(std::exception & e) {
-                    std::cout << "Line " << count << ": " << e.what() << std::endl;
                 }
-
-
+                
             }
 
         }

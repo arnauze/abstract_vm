@@ -19,3 +19,7 @@ const char * NotEnoughArguments::what(void) const throw()  {
 const char * UnknownAction::what(void) const throw()  {
     return "Action doesn't exist.";
 }
+
+const char * NumberError::what(void) const throw()  {
+    return "Synthax error in the value.";
+}
