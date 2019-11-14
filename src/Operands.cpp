@@ -45,11 +45,9 @@ IOperand const                  *operandsFactory::createFloat( std::string const
     try {
         std::stof(value);
     } catch (std::exception & e) {
-        std::cout << e.what() << std::endl;
+        throw Overflow();
     }
     float                       newValue = std::stof(value);
-    if (newValue > std::numeric_limits<float>::max() || newValue < std::numeric_limits<float>::min())
-        throw std::exception();
     return (new class Float(newValue));
 }
 
@@ -57,11 +55,9 @@ IOperand const                  *operandsFactory::createDouble( std::string cons
     try {
         std::stod(value);
     } catch (std::exception & e) {
-        std::cout << e.what() << std::endl;
+        throw Overflow();
     }
     double                      newValue = std::stod(value);
-    if (newValue > std::numeric_limits<double>::max() || newValue < std::numeric_limits<double>::min())
-        throw std::exception();
     return (new class Double(newValue));
 }
 

@@ -23,3 +23,7 @@ const char * UnknownAction::what(void) const throw()  {
 const char * NumberError::what(void) const throw()  {
     return "Synthax error in the value.";
 }
+
+const char * Overflow::what(void) const throw()  {
+    return "Overflow or underflow of value.";
+}

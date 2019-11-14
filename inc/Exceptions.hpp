@@ -27,4 +27,8 @@ struct                      NumberError : public std::exception {
     const char* what() const throw();
 };
 
+struct                      Overflow : public std::exception {
+    const char* what() const throw();
+};
+
 #endif
