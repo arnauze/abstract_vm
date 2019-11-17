@@ -42,7 +42,7 @@ void                read_file(std::fstream &file) {
                             value.erase(std::remove_if(value.begin(), value.end(), ::isspace), value.end());
 
                             std::string         type;
-                            type = value.substr(0, value.find("("));
+                            type = value.substr(0, value.find("("));   // I need to add a check here to make sure that the type actually exists
 
                             IOperand*   op;
                             std::string n;
